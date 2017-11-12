@@ -95,22 +95,19 @@ func (f *Fixed_Key) Set(pt, ct byte) {
 		return
 	}
 	if f.Is_set(pt) {
-		f.Clear(f.Get_ct(pt), false)
+		f.clear(f.Get_ct(pt))
 	}
 	f.fixed_[i] = pt
 	f.set_index()
 }
 
-func (f *Fixed_Key) Clear(ct byte, do_index bool) {
+func (f *Fixed_Key) clear(ct byte) {
 	i := ct - byte('A')
 	if i < 0 || int(i) >= len(f.fixed_) {
 		return
 	}
 	if f.fixed_[i] != byte(' ') {
 		f.fixed_[i] = byte(' ')
-		if do_index {
-			f.set_index()
-		}
 	}
 }
 
@@ -161,11 +158,4 @@ func (f Fixed_Key) check() int {
 		return -3
 	}
 	return 1
-}
-
-func (f *Fixed_Key) clear() {
-	for i := 0; i < len(f.fixed_); i++ {
-		f.fixed_[i] = byte(' ')
-	}
-	f.set_index()
 }
