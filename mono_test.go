@@ -1,8 +1,8 @@
 package mono
 
 import (
-	"testing"
 	"bytes"
+	"testing"
 )
 
 func TestNewMono(t *testing.T) {
@@ -38,5 +38,5 @@ abcdefghijklmnopqrstuvwxyz
 `)
 	if b.String() != expected {
 		t.Errorf("Display should have printed \n[%v]\n, but actually printed \n[%v]\n", expected, b.String())
-    }
+	}
 }

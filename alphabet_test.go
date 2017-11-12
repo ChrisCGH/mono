@@ -1,19 +1,19 @@
 package mono
 
 import (
-	"testing"
 	"fmt"
+	"testing"
 )
 
 func TestNewAlphabet(t *testing.T) {
 	a := NewAlphabet("abcdefghijklmnopqrstuvwxyz")
-    if a.alphabet_ != "abcdefghijklmnopqrstuvwxyz" {
+	if a.alphabet_ != "abcdefghijklmnopqrstuvwxyz" {
 		t.Error("a.alphabet_ should be %s, but is %s", "abcdefghijklmnopqrstuvwxyz", a.alphabet_)
 	}
 	if a.alphabet_size_ != 26 {
 		t.Error("a.alphabet_size_ should be 26 but is %d", a.alphabet_size_)
 	}
-    if a.Alphabet() != "abcdefghijklmnopqrstuvwxyz" {
+	if a.Alphabet() != "abcdefghijklmnopqrstuvwxyz" {
 		t.Error("a.Alphabet() should be %s, but is %s", "abcdefghijklmnopqrstuvwxyz", a.Alphabet())
 	}
 	if a.c1_ != 0 {
@@ -88,7 +88,7 @@ func TestSwaps(t *testing.T) {
 		t.Error("Z should decode to x")
 	}
 	a.Start_swaps()
-	for ! a.End_swaps() {
+	for !a.End_swaps() {
 		a.Next_swap(f)
 		m.Set_key(a.Alphabet())
 		if m.Decode("J") != "e" {
@@ -100,4 +100,3 @@ func TestSwaps(t *testing.T) {
 		}
 	}
 }
-

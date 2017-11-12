@@ -2,6 +2,7 @@ package mono
 
 import (
 	"fmt"
+	"os"
 	"time"
 	"unicode"
 )
@@ -149,7 +150,7 @@ func (solver *Mono_Solver) Solve() int {
 							solver.elapsed_ = elapsed
 							if solver.verbose_ {
 								fmt.Printf("%d alphabets in %v\n", solver.scorer_.Get_scored_count(), elapsed)
-								solver.mono_.Display()
+								solver.mono_.Display(os.Stdout)
 								fmt.Printf("Score = %d\n", best_local_max_score)
 								fmt.Println(outtext)
 							}
@@ -180,7 +181,7 @@ func (solver *Mono_Solver) Solve() int {
 			outtext = solver.mono_.Decode(solver.ciphertext_)
 			if solver.verbose_ {
 				fmt.Printf(">>>> %d alphabets in %v\n", solver.scorer_.Get_scored_count(), elapsed)
-				solver.mono_.Display()
+				solver.mono_.Display(os.Stdout)
 				fmt.Printf("Score = %d\n", best_local_max_score)
 				fmt.Println(outtext)
 			}

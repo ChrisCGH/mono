@@ -30,8 +30,8 @@ func TestLength(t *testing.T) {
 
 func TestNotFixedLength(t *testing.T) {
 	f := NewFixed_Key()
-	if f.NotFixedLength() != len(f.not_fixed_) - 1 {
-		t.Errorf("f.Length() should be %d, but actually is %d\n", len(f.not_fixed_) - 1, f.NotFixedLength())
+	if f.NotFixedLength() != len(f.not_fixed_)-1 {
+		t.Errorf("f.Length() should be %d, but actually is %d\n", len(f.not_fixed_)-1, f.NotFixedLength())
 	}
 }
 
@@ -39,10 +39,10 @@ func TestSet(t *testing.T) {
 	ff := NewFixed_Key()
 	f := &ff
 	if f.Is_set(byte('e')) {
-	    t.Error("e should not be set in fixed key")
+		t.Error("e should not be set in fixed key")
 	}
 	f.Set(byte('e'), byte('J'))
-	if ! f.Is_set(byte('e')) {
+	if !f.Is_set(byte('e')) {
 		t.Errorf("e should be set in fixed key\n")
 	}
 	if f.Get_ct(byte('e')) != byte('J') {
@@ -52,7 +52,7 @@ func TestSet(t *testing.T) {
 		t.Errorf("J should be set to e\n")
 	}
 	f.Set(byte('x'), byte('Z'))
-	if ! f.Is_set(byte('x')) {
+	if !f.Is_set(byte('x')) {
 		t.Errorf("x should be set in fixed key\n")
 	}
 	if f.Get_ct(byte('x')) != byte('Z') {
@@ -62,7 +62,7 @@ func TestSet(t *testing.T) {
 		t.Errorf("Z should be set to x\n")
 	}
 	if f.Is_set(byte('f')) {
-	    t.Error("f should not be set in fixed key")
+		t.Error("f should not be set in fixed key")
 	}
 	if f.Get_ct(byte('f')) != byte(' ') {
 		t.Error("f should be set to ' ' in fixed key")
