@@ -35,7 +35,7 @@ func TestNotFixedLength(t *testing.T) {
 	}
 }
 
-func TestSet(t *testing.T) {
+func TestRest(t *testing.T) {
 	ff := NewFixed_Key()
 	f := &ff
 	if f.Is_set(byte('e')) {
@@ -72,5 +72,8 @@ func TestSet(t *testing.T) {
 	}
 	if f.Get_pt(byte('0')) != byte(' ') {
 		t.Error("0 should be set to ' ' in fixed key")
+	}
+	if f.Number_fixed() != 2 {
+		t.Errorf("f.Number_fixed() should return 2, but actually returned %d\n", f.Number_fixed())
 	}
 }

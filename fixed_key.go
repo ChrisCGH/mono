@@ -127,35 +127,3 @@ func (f Fixed_Key) Display() {
 	}
 	fmt.Println("")
 }
-
-func (f Fixed_Key) Get_key() string {
-	key := make([]byte, 26)
-	for pt := byte('a'); pt <= byte('z'); pt++ {
-		ct := f.Get_ct(pt)
-		if ct == byte(' ') {
-			key[pt-byte('a')] = byte('.')
-		} else {
-			key[pt-byte('a')] = ct
-		}
-	}
-	return string(key[:26])
-}
-
-func (f Fixed_Key) check() int {
-	if f.dummy_ != 0 {
-		return -1
-	}
-	num_fixed := 0
-	for i := 0; i < len(f.fixed_); i++ {
-		if f.index_[i] != -1 && f.index_[i] < 0 && int(f.index_[i]) >= len(f.fixed_) {
-			return -2
-		}
-		if f.index_[i] != -1 {
-			num_fixed++
-		}
-	}
-	if num_fixed != f.number_fixed_ {
-		return -3
-	}
-	return 1
-}
