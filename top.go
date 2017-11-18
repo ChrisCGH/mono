@@ -22,6 +22,7 @@ func (t *Top) Clear() {
 	}
 	t.min_top_score_ = 1.0
 	t.max_top_score_ = 1.0
+	t.top_ = make([]Alphabet, t.max_top_)
 }
 
 func (t Top) Size() int {
@@ -29,6 +30,9 @@ func (t Top) Size() int {
 }
 
 func (t Top) Alphabet(i int) Alphabet {
+	if i < 0 || i >= len(t.top_) {
+		return Alphabet{}
+	}
 	return t.top_[i]
 }
 
@@ -74,5 +78,8 @@ func (t Top) Equal(t2 Top) bool {
 }
 
 func (t Top) Score(i int) int {
+	if i < 0 || i >= len(t.score_) {
+		return 0
+	}
 	return int(t.score_[i])
 }
