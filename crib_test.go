@@ -14,9 +14,9 @@ func TestNewCrib(t *testing.T) {
 	c = NewCrib("N EASSTH EIN GIVIC ANDI N EWORRID ENORSC", "a smooth sea", 0)
 	expected_ct := "NEASSTHEINGIVICANDINEWORRIDENORSC"
 	expected_crib := "asmoothsea"
-	expected_position := 0 
+	expected_position := 0
 	expected_possible := true
-	expected_original_ct := "N EASSTH EIN GIVIC ANDI N EWORRID ENORSC" 
+	expected_original_ct := "N EASSTH EIN GIVIC ANDI N EWORRID ENORSC"
 	if c.ct_ != expected_ct {
 		t.Errorf("c.ct_ should be %s, but is actually %s\n", expected_ct, c.ct_)
 	}
@@ -63,7 +63,7 @@ func TestMove(t *testing.T) {
 	if c.position_ != 0 {
 		t.Error("c.position_ should be 0 after Move_left()")
 	}
-	if ! c.Is_possible() {
+	if !c.Is_possible() {
 		t.Error("Should be possible after Move_left()")
 	}
 	c.Move_right()
@@ -86,21 +86,21 @@ func TestMove(t *testing.T) {
 	if c.position_ != 20 {
 		t.Error("c.position_ should be 20 after Next_right()")
 	}
-	if ! c.Is_possible() {
+	if !c.Is_possible() {
 		t.Error("Should be possible after Next_right()")
 	}
 	c.Next_right()
 	if c.position_ != 20 {
 		t.Error("c.position_ should be 20 after Next_right()")
 	}
-	if ! c.Is_possible() {
+	if !c.Is_possible() {
 		t.Error("Should be possible after Next_right()")
 	}
 	c.Next_left()
 	if c.position_ != 0 {
 		t.Error("c.position_ should be 0 after Next_left()")
 	}
-	if ! c.Is_possible() {
+	if !c.Is_possible() {
 		t.Error("Should be possible after Next_left()")
 	}
 }
@@ -109,12 +109,12 @@ func TestGet_pt(t *testing.T) {
 	cc := NewCrib("N EASSTH EIN GIVIC ANDI N EWORRID ENORSC", "a smooth", 0)
 	c := &cc
 	expected_pt := "asmooths.a.....ma..as......sa..o."
-    if c.Get_pt() != expected_pt {
+	if c.Get_pt() != expected_pt {
 		t.Errorf("c.Get_pt() should be %s, but actually is %s\n", expected_pt, c.Get_pt())
 	}
 	c.Next_right()
 	expected_pt = ".a.....at..t.t...ht.asmootha.mo.."
-    if c.Get_pt() != expected_pt {
+	if c.Get_pt() != expected_pt {
 		t.Errorf("c.Get_pt() should be %s, but actually is %s\n", expected_pt, c.Get_pt())
 	}
 }

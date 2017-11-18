@@ -53,7 +53,7 @@ func TestAdd(t *testing.T) {
 	(&alp6).Randomise(f)
 	score6 := 150
 
-	if ! top.Qualifies(score1) {
+	if !top.Qualifies(score1) {
 		t.Errorf("Score %d should qualify\n", score1)
 	}
 	(&top).Add(alp1, score1)
@@ -101,7 +101,7 @@ func TestAdd(t *testing.T) {
 		t.Errorf("top.max_top_score_ should be %d, but actually is %.2f\n", score4, top.max_top_score_)
 	}
 
-	if ! top.Qualifies(score5) {
+	if !top.Qualifies(score5) {
 		t.Errorf("Score %d should qualify\n", score5)
 	}
 	(&top).Add(alp5, score5)
@@ -156,7 +156,7 @@ func TestAdd(t *testing.T) {
 	(&top2).Add(alp1, score3)
 	(&top2).Add(alp1, score4)
 	(&top2).Add(alp1, score5)
-	if ! top2.Equal(top) {
+	if !top2.Equal(top) {
 		t.Error("top2 should be equal to top\n")
 	}
 
@@ -170,5 +170,3 @@ func TestAdd(t *testing.T) {
 		}
 	}
 }
-
-

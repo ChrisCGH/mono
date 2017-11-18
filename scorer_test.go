@@ -1,9 +1,9 @@
 package mono
 
 import (
-	"testing"
-	"os"
 	"fmt"
+	"os"
+	"testing"
 )
 
 func writeTrigramFile(t *testing.T, filename string) {
@@ -66,7 +66,7 @@ func TestTrigraph_Scorer(t *testing.T) {
 	if scorer.trigram_filename_ != test_tri_spaces_file {
 		t.Errorf("scorer.trigram_filename_ should be %s, but actually is %s\n", test_tri_spaces_file, scorer.trigram_filename_)
 	}
-	if ! scorer.Spaces_scored() {
+	if !scorer.Spaces_scored() {
 		t.Error("scorer.Spaces_scored() should return true")
 	}
 	score = scorer.Score("aaa{aa{z{aaa", false)
@@ -142,7 +142,7 @@ func TestTetragraph_Scorer(t *testing.T) {
 	if scorer.tetragram_filename_ != test_tet_spaces_file {
 		t.Errorf("scorer.tetragram_filename_ should be %s, but actually is %s\n", test_tet_spaces_file, scorer.tetragram_filename_)
 	}
-	if ! scorer.Spaces_scored() {
+	if !scorer.Spaces_scored() {
 		t.Error("scorer.Spaces_scored() should return true")
 	}
 	score = scorer.Score("aaft{aba{aaaa", false)
@@ -218,7 +218,7 @@ func TestNgraph_Scorer(t *testing.T) {
 	if scorer.ngraph_filename_ != test_ng_spaces_file {
 		t.Errorf("scorer.ngraph_filename_ should be %s, but actually is %s\n", test_ng_spaces_file, scorer.ngraph_filename_)
 	}
-	if ! scorer.Spaces_scored() {
+	if !scorer.Spaces_scored() {
 		t.Error("scorer.Spaces_scored() should return true")
 	}
 	score = scorer.Score("the{a{the{b{abab", false)

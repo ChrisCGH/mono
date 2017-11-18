@@ -27,7 +27,7 @@ func (scorer Trigraph_Scorer) Spaces_scored() bool {
 	return scorer.spaces_scored_
 }
 
-func (scorer* Trigraph_Scorer) Reset() {
+func (scorer *Trigraph_Scorer) Reset() {
 	scorer.scored_count_ = 0
 }
 
@@ -38,7 +38,7 @@ func (scorer *Trigraph_Scorer) Set_file(filename string) {
 	}
 	scorer.trigram_filename_ = filename
 	scorer.spaces_scored_ = false
-    scorer.scored_count_ = 0
+	scorer.scored_count_ = 0
 	// read file
 	f, err := os.Open(scorer.trigram_filename_)
 	if err != nil {
@@ -54,7 +54,7 @@ func (scorer *Trigraph_Scorer) Set_file(filename string) {
 
 		trigram := parts[0]
 		c1 := trigram[0] - byte('a')
-		if c1 == byte('z') - byte('a') +1 {
+		if c1 == byte('z')-byte('a')+1 {
 			scorer.spaces_scored_ = true
 		}
 		c2 := trigram[1] - byte('a')
@@ -112,7 +112,7 @@ func (scorer *Tetragraph_Scorer) Set_file(filename string) {
 	}
 	scorer.tetragram_filename_ = filename
 	scorer.spaces_scored_ = false
-    scorer.scored_count_ = 0
+	scorer.scored_count_ = 0
 	// read file
 	f, err := os.Open(scorer.tetragram_filename_)
 	if err != nil {
@@ -128,7 +128,7 @@ func (scorer *Tetragraph_Scorer) Set_file(filename string) {
 
 		tetragram := parts[0]
 		c1 := tetragram[0] - byte('a')
-		if c1 == byte('z') - byte('a') +1 {
+		if c1 == byte('z')-byte('a')+1 {
 			scorer.spaces_scored_ = true
 		}
 		c2 := tetragram[1] - byte('a')
@@ -192,7 +192,7 @@ func (scorer *Ngraph_Scorer) Set_file(filename string) {
 	}
 	scorer.ngraph_filename_ = filename
 	scorer.spaces_scored_ = false
-    scorer.scored_count_ = 0
+	scorer.scored_count_ = 0
 	// read file
 	f, err := os.Open(scorer.ngraph_filename_)
 	if err != nil {
@@ -211,7 +211,7 @@ func (scorer *Ngraph_Scorer) Set_file(filename string) {
 		scorer.ngraph_length_ = len(ngraph)
 
 		c1 := ngraph[0] - byte('a')
-		if c1 == byte('z') - byte('a') +1 {
+		if c1 == byte('z')-byte('a')+1 {
 			scorer.spaces_scored_ = true
 		}
 
