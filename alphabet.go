@@ -2,6 +2,7 @@ package mono
 
 import (
 	"fmt"
+	"io"
 	"math/rand"
 	"time"
 	"unicode"
@@ -19,11 +20,11 @@ func NewAlphabet(a string) Alphabet {
 	return Alphabet{alphabet_: a, alphabet_size_: len(a)}
 }
 
-func (a Alphabet) Display() {
+func (a Alphabet) Display(w io.Writer) {
 	for _, r := range a.alphabet_ {
-		fmt.Printf("%s ", string(r))
+		fmt.Fprintf(w, "%s ", string(r))
 	}
-	fmt.Printf("\n")
+	fmt.Fprintf(w, "\n")
 }
 
 var first_time = true

@@ -1,6 +1,7 @@
 package mono
 
 import (
+	"bytes"
 	"testing"
 )
 
@@ -41,9 +42,26 @@ func TestRest(t *testing.T) {
 	if f.Is_set(byte('e')) {
 		t.Error("e should not be set in fixed key")
 	}
+	f.Set(byte('a'), byte('9'))
+	if f.Is_set(byte('a')) {
+		t.Error("a should not be set in fixed key")
+	}
+	f.Set(byte('A'), byte('A'))
+	if f.Is_set(byte('a')) {
+		t.Error("a should not be set in fixed key")
+	}
+	check := ff.fixed_
+	f.clear(byte('A') - 1)
+	if f.fixed_ != check {
+		t.Error("f should be unchanged")
+	}
+
 	f.Set(byte('e'), byte('J'))
 	if !f.Is_set(byte('e')) {
 		t.Errorf("e should be set in fixed key\n")
+	}
+	if f.Get_ct(byte('9')) != byte(' ') {
+		t.Errorf("9 should return ' '")
 	}
 	if f.Get_ct(byte('e')) != byte('J') {
 		t.Errorf("e should be set to J\n")
@@ -75,5 +93,15 @@ func TestRest(t *testing.T) {
 	}
 	if f.Number_fixed() != 2 {
 		t.Errorf("f.Number_fixed() should return 2, but actually returned %d\n", f.Number_fixed())
+	}
+	var b bytes.Buffer
+	f.Display(&b)
+	expected := `number fixed = 2
+         e               x
+Not fixed : [abcdfghijklmnopqrstuvwyz]
+-1 -1 -1 -1 9 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 25 -1 -1 
+`
+	if b.String() != expected {
+		t.Errorf("f.Display() should output \n%s\n, but actually output \n%s\n", expected, b.String())
 	}
 }

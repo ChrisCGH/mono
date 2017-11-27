@@ -52,6 +52,12 @@ func TestAdd(t *testing.T) {
 	alp6 := NewAlphabet("abcdefghijklmnopqrstuvwxyz")
 	(&alp6).Randomise(f)
 	score6 := 150
+	alp7 := NewAlphabet("abcdefghijklmnopqrstuvwxyz")
+	(&alp7).Randomise(f)
+	score7 := 250
+	alp8 := NewAlphabet("abcdefghijklmnopqrstuvwxyz")
+	(&alp8).Randomise(f)
+	score8 := 299
 
 	if !top.Qualifies(score1) {
 		t.Errorf("Score %d should qualify\n", score1)
@@ -146,6 +152,10 @@ func TestAdd(t *testing.T) {
 	if top.Score(3) != 0 {
 		t.Error("top.Score(3) should be 0, but actually is %d\n", top.Score(3))
 	}
+	(&top).Add(alp7, score7)
+	if top.Alphabet(2).Alphabet() != alp5.Alphabet() {
+		t.Errorf("top.Alphabet(2) should be %v, but actually is %v\n", alp5, top.Alphabet(2))
+	}
 
 	top2 := NewTop(3)
 	if top2.Equal(top) {
@@ -158,6 +168,16 @@ func TestAdd(t *testing.T) {
 	(&top2).Add(alp1, score5)
 	if !top2.Equal(top) {
 		t.Error("top2 should be equal to top\n")
+	}
+
+	top3 := NewTop(3)
+	(&top3).Add(alp1, score1)
+	(&top3).Add(alp1, score2)
+	(&top3).Add(alp1, score8)
+	(&top3).Add(alp1, score4)
+	(&top3).Add(alp1, score5)
+	if top2.Equal(top3) {
+		t.Error("top2 should not be equal to top3\n")
 	}
 
 	(&top2).Clear()

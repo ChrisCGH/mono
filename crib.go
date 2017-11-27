@@ -5,20 +5,18 @@ import (
 )
 
 type Crib struct {
-	ct_          string
-	crib_        string
-	pt_          string
-	position_    int
-	possible_    bool
-	original_ct_ string
-	fixed_key_   *Fixed_Key
+	ct_        string
+	crib_      string
+	pt_        string
+	position_  int
+	possible_  bool
+	fixed_key_ *Fixed_Key
 }
 
 func NewCrib(ct string, crib string, position int) Crib {
 	new_crib := Crib{}
 	if ct != "" {
 		new_crib.ct_ = copy_characters_upper(ct)
-		new_crib.original_ct_ = ct
 		if crib != "" {
 			new_crib.crib_ = copy_characters_lower(crib)
 		}
@@ -123,20 +121,6 @@ func (c Crib) Get_crib_string() string {
 
 func (c Crib) Get_fixed_key() *Fixed_Key {
 	return c.fixed_key_
-}
-
-func (c Crib) Ct_has_changed(ct string) bool {
-	if ct != "" && c.original_ct_ != ct {
-		return true
-	}
-	if (ct == "" || c.original_ct_ == "") && ct != c.original_ct_ {
-		return true
-	}
-	return false
-}
-
-func (c Crib) Get_original_ct() string {
-	return c.original_ct_
 }
 
 func (c Crib) Get_position() int {

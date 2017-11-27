@@ -11,7 +11,7 @@ import (
 type Scorer interface {
 	Spaces_scored() bool
 	Reset()
-	Set_file(string)
+	Set_file(string) error
 	Get_scored_count() int
 	Score(string, bool) int
 }
@@ -31,10 +31,10 @@ func (scorer *Trigraph_Scorer) Reset() {
 	scorer.scored_count_ = 0
 }
 
-func (scorer *Trigraph_Scorer) Set_file(filename string) {
+func (scorer *Trigraph_Scorer) Set_file(filename string) error {
 	if filename == scorer.trigram_filename_ {
 		scorer.scored_count_ = 0
-		return
+		return nil
 	}
 	scorer.trigram_filename_ = filename
 	scorer.spaces_scored_ = false
@@ -42,7 +42,8 @@ func (scorer *Trigraph_Scorer) Set_file(filename string) {
 	// read file
 	f, err := os.Open(scorer.trigram_filename_)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return err
 	}
 	defer f.Close()
 	scanner := bufio.NewScanner(f)
@@ -68,9 +69,7 @@ func (scorer *Trigraph_Scorer) Set_file(filename string) {
 		}
 	}
 	err = scanner.Err()
-	if err != nil {
-		log.Fatal(err)
-	}
+	return err
 }
 
 func (scorer *Trigraph_Scorer) Score(plaintext string, debug bool) int {
@@ -105,10 +104,10 @@ func (scorer *Tetragraph_Scorer) Reset() {
 	scorer.scored_count_ = 0
 }
 
-func (scorer *Tetragraph_Scorer) Set_file(filename string) {
+func (scorer *Tetragraph_Scorer) Set_file(filename string) error {
 	if filename == scorer.tetragram_filename_ {
 		scorer.scored_count_ = 0
-		return
+		return nil
 	}
 	scorer.tetragram_filename_ = filename
 	scorer.spaces_scored_ = false
@@ -116,7 +115,8 @@ func (scorer *Tetragraph_Scorer) Set_file(filename string) {
 	// read file
 	f, err := os.Open(scorer.tetragram_filename_)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return err
 	}
 	defer f.Close()
 	scanner := bufio.NewScanner(f)
@@ -143,9 +143,7 @@ func (scorer *Tetragraph_Scorer) Set_file(filename string) {
 		}
 	}
 	err = scanner.Err()
-	if err != nil {
-		log.Fatal(err)
-	}
+	return err
 }
 
 func (scorer *Tetragraph_Scorer) Score(plaintext string, debug bool) int {
@@ -185,10 +183,10 @@ func (scorer *Ngraph_Scorer) Reset() {
 	scorer.scored_count_ = 0
 }
 
-func (scorer *Ngraph_Scorer) Set_file(filename string) {
+func (scorer *Ngraph_Scorer) Set_file(filename string) error {
 	if filename == scorer.ngraph_filename_ {
 		scorer.scored_count_ = 0
-		return
+		return nil
 	}
 	scorer.ngraph_filename_ = filename
 	scorer.spaces_scored_ = false
@@ -196,7 +194,8 @@ func (scorer *Ngraph_Scorer) Set_file(filename string) {
 	// read file
 	f, err := os.Open(scorer.ngraph_filename_)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return err
 	}
 	defer f.Close()
 	scanner := bufio.NewScanner(f)
@@ -223,9 +222,7 @@ func (scorer *Ngraph_Scorer) Set_file(filename string) {
 		}
 	}
 	err = scanner.Err()
-	if err != nil {
-		log.Fatal(err)
-	}
+	return err
 }
 
 func (scorer *Ngraph_Scorer) Score(plaintext string, debug bool) int {

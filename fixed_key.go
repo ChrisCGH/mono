@@ -2,6 +2,7 @@ package mono
 
 import (
 	"fmt"
+	"io"
 )
 
 type Fixed_Key struct {
@@ -87,13 +88,10 @@ func (f *Fixed_Key) Set(pt, ct byte) {
 	if ct < byte('A') || ct > byte('Z') {
 		return
 	}
-	if pt < byte('a') || ct > byte('z') {
+	if pt < byte('a') || pt > byte('z') {
 		return
 	}
 	i := ct - byte('A')
-	if i < 0 || int(i) >= len(f.fixed_) {
-		return
-	}
 	if f.Is_set(pt) {
 		f.clear(f.Get_ct(pt))
 	}
@@ -115,15 +113,15 @@ func (f Fixed_Key) Number_fixed() int {
 	return f.number_fixed_
 }
 
-func (f Fixed_Key) Display() {
-	fmt.Printf("number fixed = %d\n", f.number_fixed_)
+func (f Fixed_Key) Display(w io.Writer) {
+	fmt.Fprintf(w, "number fixed = %d\n", f.number_fixed_)
 	for i := 0; i < len(f.fixed_); i++ {
-		fmt.Printf("%s", string(f.fixed_[i]))
+		fmt.Fprintf(w, "%s", string(f.fixed_[i]))
 	}
-	fmt.Println("")
-	fmt.Printf("Not fixed : [%s]\n", string(f.not_fixed_[:26]))
+	fmt.Fprintln(w, "")
+	fmt.Fprintf(w, "Not fixed : [%s]\n", string(f.not_fixed_[:24]))
 	for i := 0; i < len(f.index_); i++ {
-		fmt.Printf("%d ", f.index_[i])
+		fmt.Fprintf(w, "%d ", f.index_[i])
 	}
-	fmt.Println("")
+	fmt.Fprintln(w, "")
 }

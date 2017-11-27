@@ -10,7 +10,7 @@ type Config struct {
 	data_files []map[string]string
 }
 
-func Init() {
+func Init() error {
 	viper.SetEnvPrefix("monorest")
 	viper.SetConfigName("monorest")
 	viper.AddConfigPath(".")
@@ -20,24 +20,29 @@ func Init() {
 	if err != nil {
 		e, ok := err.(viper.ConfigParseError)
 		if ok {
-			log.Fatalf("error parsing config file: %v", e)
+			log.Printf("error parsing config file: %v", e)
+			return e
 		}
 		log.Printf("No config file used")
 	} else {
 		log.Printf("Using config file: %v", viper.ConfigFileUsed())
 	}
+	return nil
 }
 
 func NewConfig() *Config {
 	config := Config{data_files: make([]map[string]string, 0)}
 
-	for _, d := range viper.Get("monorest.data_files").([]interface{}) {
-		data_file_i := d.(map[interface{}]interface{})
-		data_file := make(map[string]string)
-		for k, v := range data_file_i {
-			data_file[k.(string)] = v.(string)
+	data_files := viper.Get("monorest.data_files")
+	if data_files != nil {
+		for _, d := range data_files.([]interface{}) {
+			data_file_i := d.(map[interface{}]interface{})
+			data_file := make(map[string]string)
+			for k, v := range data_file_i {
+				data_file[k.(string)] = v.(string)
+			}
+			config.data_files = append(config.data_files, data_file)
 		}
-		config.data_files = append(config.data_files, data_file)
 	}
 	return &config
 }

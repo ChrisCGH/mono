@@ -6,7 +6,7 @@ import (
 
 func TestNewCrib(t *testing.T) {
 	c := NewCrib("", "", 0)
-	expected := Crib{ct_: "", crib_: "", pt_: "", position_: 0, possible_: false, original_ct_: "", fixed_key_: nil}
+	expected := Crib{ct_: "", crib_: "", pt_: "", position_: 0, possible_: false, fixed_key_: nil}
 	if c != expected {
 		t.Errorf("c should be %v, but is actually %v\n", expected, c)
 	}
@@ -16,7 +16,6 @@ func TestNewCrib(t *testing.T) {
 	expected_crib := "asmoothsea"
 	expected_position := 0
 	expected_possible := true
-	expected_original_ct := "N EASSTH EIN GIVIC ANDI N EWORRID ENORSC"
 	if c.ct_ != expected_ct {
 		t.Errorf("c.ct_ should be %s, but is actually %s\n", expected_ct, c.ct_)
 	}
@@ -45,9 +44,6 @@ func TestNewCrib(t *testing.T) {
 		t.Errorf("c.Is_possible() should be %d, but is actually %d\n", expected_possible, c.Is_possible())
 	}
 
-	if c.original_ct_ != expected_original_ct {
-		t.Errorf("c.original_ct_ should be %s, but is actually %s\n", expected_original_ct, c.original_ct_)
-	}
 	if c.fixed_key_ == nil {
 		t.Error("c.fixed_key should be non-nil")
 	}
@@ -57,8 +53,59 @@ func TestNewCrib(t *testing.T) {
 }
 
 func TestMove(t *testing.T) {
-	cc := NewCrib("N EASSTH EIN GIVIC ANDI N EWORRID ENORSC", "a smooth sea", 0)
+	cc := Crib{}
 	c := &cc
+	c.Move_right()
+	if c.position_ != 0 {
+		t.Error("c.position_ should be 0 after Move_right()")
+	}
+	c.Next_right()
+	if c.position_ != 0 {
+		t.Error("c.position_ should be 0 after Next_right()")
+	}
+	c.place_at(10)
+	if c.position_ != 0 {
+		t.Error("c.position_ should be 0 after place_at(10)")
+	}
+
+	cc = NewCrib("AAABBBCCDD", "aaabbbccdd", 0)
+	c = &cc
+	c.Move_right()
+	if c.position_ != 0 {
+		t.Error("c.position_ should be 0 after Move_right()")
+	}
+
+	cc = NewCrib("AAABBBCCDD", "ccdd", 0)
+	c = &cc
+	c.Next_right()
+	c.Next_right()
+	c.Next_right()
+	if c.position_ != 6 {
+		t.Error("c.position_ should be 6 after Next_right()")
+	}
+	c.Next_left()
+	if c.position_ != 4 {
+		t.Error("c.position_ should be 4 after Next_left()")
+	}
+	c.Next_left()
+	if c.position_ != 1 {
+		t.Error("c.position_ should be 4 after Next_left()")
+	}
+	c.Next_left()
+	if c.position_ != 1 {
+		t.Error("c.position_ should be 4 after Next_left()")
+	}
+	c.place_at(20)
+	if c.position_ != 1 {
+		t.Error("c.position_ should be 4 after place_at()")
+	}
+	c.place_at(-1)
+	if c.position_ != 1 {
+		t.Error("c.position_ should be 1 after place_at(-1)")
+	}
+
+	cc = NewCrib("N EASSTH EIN GIVIC ANDI N EWORRID ENORSC", "a smooth sea", 0)
+	c = &cc
 	c.Move_left()
 	if c.position_ != 0 {
 		t.Error("c.position_ should be 0 after Move_left()")
@@ -142,6 +189,20 @@ func TestPossible_positions(t *testing.T) {
 	}
 	if _, ok := possible_positions[15]; ok {
 		t.Error("15 should not be a possible position")
+	}
+
+	possible_positions = Possible_positions("AAABBBCCDD", "aabb")
+	if len(possible_positions) != 3 {
+		t.Errorf("len(possible_positions) should be 3, but actually is %d", len(possible_positions))
+	}
+	if _, ok := possible_positions[1]; !ok {
+		t.Errorf("possible_positions[1] should exist")
+	}
+	if _, ok := possible_positions[4]; !ok {
+		t.Errorf("possible_positions[4] should exist")
+	}
+	if _, ok := possible_positions[6]; !ok {
+		t.Errorf("possible_positions[6] should exist")
 	}
 
 }

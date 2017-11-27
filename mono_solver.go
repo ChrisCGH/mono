@@ -16,14 +16,15 @@ type Mono_Solver struct {
 	max_iterations_ int
 	timeout_        int
 
-	verbose_     bool
-	stuck_count_ int
-	score_       int
-	ciphertext_  string
-	solution_    string
-	iterations_  int
-	key_         string
-	elapsed_     time.Duration
+	verbose_             bool
+	stuck_count_         int
+	score_               int
+	ciphertext_          string
+	original_ciphertext_ string
+	solution_            string
+	iterations_          int
+	key_                 string
+	elapsed_             time.Duration
 }
 
 func NewMono_Solver() Mono_Solver {
@@ -33,6 +34,7 @@ func NewMono_Solver() Mono_Solver {
 }
 
 func (solver *Mono_Solver) Set_cipher_text(ciphertext string) {
+	solver.original_ciphertext_ = ciphertext
 	solver.ciphertext_ = ""
 	space_last := false
 	for _, r := range ciphertext {
@@ -91,6 +93,30 @@ func (solver Mono_Solver) is_time_to_stop() bool {
 		return true
 	}
 	return false
+}
+
+func remove_spaces(plain string) string {
+	b := ""
+	for _, p := range plain {
+		if byte(p) != byte('z')+1 {
+			b += string(p)
+		}
+	}
+	return b
+}
+
+func reformat(plain, cipher string) string {
+	i := 0
+	b := ""
+	for _, c := range cipher {
+		if unicode.IsLetter(c) {
+			b += string(plain[i])
+			i++
+		} else {
+			b += string(c)
+		}
+	}
+	return string(b)
 }
 
 func (solver *Mono_Solver) Solve() int {
@@ -190,7 +216,8 @@ func (solver *Mono_Solver) Solve() int {
 			solver.key_ = best_local_max_alphabet.Alphabet()
 			solver.iterations_ = solver.scorer_.Get_scored_count()
 			solver.elapsed_ = elapsed
-			return 0
+			done = true
+			//return 0
 		}
 		if top1.Equal(top2) {
 			top1.Clear()
@@ -214,7 +241,7 @@ func (solver *Mono_Solver) Solve() int {
 }
 
 func (solver Mono_Solver) Solution() string {
-	return solver.solution_
+	return reformat(remove_spaces(solver.solution_), solver.original_ciphertext_)
 }
 
 func (solver Mono_Solver) Score() int {

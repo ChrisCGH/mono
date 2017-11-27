@@ -23,7 +23,7 @@ func TestSet_key(t *testing.T) {
 func TestDecode(t *testing.T) {
 	m := NewMono()
 	m.Set_key("zyxwvutsrqponmlkjihgfedcba")
-	if m.Decode("ABC") != "zyx" {
+	if m.Decode("A{B{C") != "z{y{x" {
 		t.Errorf("ABC should decode to zyx")
 	}
 }

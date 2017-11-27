@@ -17,6 +17,16 @@ func writeTrigramFile(t *testing.T, filename string) {
 	fmt.Fprintln(f, "ZZZ : 0 0.00")
 }
 
+func writeInvalidTrigramFile(t *testing.T, filename string) {
+	f, err := os.OpenFile(filename, os.O_WRONLY|os.O_CREATE, 0666)
+	defer f.Close()
+	if err != nil {
+		t.Fatal("Failed to create test trigram file")
+	}
+	fmt.Fprintln(f, "THE : 0 a.bc")
+	fmt.Fprintln(f, "ALL : 0 0.78")
+}
+
 func writeTrigramFileWithSpaces(t *testing.T, filename string) {
 	f, err := os.OpenFile(filename, os.O_WRONLY|os.O_CREATE, 0666)
 	defer f.Close()
@@ -35,7 +45,13 @@ func TestTrigraph_Scorer(t *testing.T) {
 	test_tri_spaces_file := "test.tri.spaces"
 	writeTrigramFileWithSpaces(t, test_tri_spaces_file)
 	defer os.Remove(test_tri_spaces_file)
+	missing_test_tri_file := "missing.tri"
+	bad_test_tri_file := "bad.tri"
+	writeInvalidTrigramFile(t, bad_test_tri_file)
+	defer os.Remove(bad_test_tri_file)
 	scorer := &Trigraph_Scorer{}
+	scorer.Set_file(missing_test_tri_file)
+	scorer.Set_file(bad_test_tri_file)
 	scorer.Set_file(test_tri_file)
 	if scorer.trigram_filename_ != test_tri_file {
 		t.Errorf("scorer.trigram_filename_ should be %s, but actually is %s\n", test_tri_file, scorer.trigram_filename_)
@@ -76,6 +92,16 @@ func TestTrigraph_Scorer(t *testing.T) {
 	if scorer.Get_scored_count() != 1 {
 		t.Errorf("scorer.Get_scored_count() should be 1, but actually is %d\n", scorer.Get_scored_count())
 	}
+	scorer.Set_file(test_tri_spaces_file)
+	if scorer.trigram_filename_ != test_tri_spaces_file {
+		t.Errorf("scorer.trigram_filename_ should be %s, but actually is %s\n", test_tri_spaces_file, scorer.trigram_filename_)
+	}
+	if scorer.Get_scored_count() != 0 {
+		t.Errorf("scorer.Get_scored_count() should be 0, but actually is %d\n", scorer.Get_scored_count())
+	}
+	if !scorer.Spaces_scored() {
+		t.Error("scorer.Spaces_scored() should return true")
+	}
 }
 
 func writeTetragramFile(t *testing.T, filename string) {
@@ -85,6 +111,19 @@ func writeTetragramFile(t *testing.T, filename string) {
 		t.Fatal("Failed to create test tetragram file")
 	}
 	fmt.Fprintln(f, "THAT : 5307 8.92778")
+	fmt.Fprintln(f, "THER : 5075 8.88308")
+	fmt.Fprintln(f, "WITH : 4325 8.72317")
+	fmt.Fprintln(f, "NTHE : 3957 8.63424")
+	fmt.Fprintln(f, "DTHE : 3369 8.47337")
+}
+
+func writeInvalidTetragramFile(t *testing.T, filename string) {
+	f, err := os.OpenFile(filename, os.O_WRONLY|os.O_CREATE, 0666)
+	defer f.Close()
+	if err != nil {
+		t.Fatal("Failed to create test tetragram file")
+	}
+	fmt.Fprintln(f, "THAT : 5307 a.bcdef")
 	fmt.Fprintln(f, "THER : 5075 8.88308")
 	fmt.Fprintln(f, "WITH : 4325 8.72317")
 	fmt.Fprintln(f, "NTHE : 3957 8.63424")
@@ -111,7 +150,13 @@ func TestTetragraph_Scorer(t *testing.T) {
 	test_tet_spaces_file := "test.tet.spaces"
 	writeTetragramFileWithSpaces(t, test_tet_spaces_file)
 	defer os.Remove(test_tet_spaces_file)
+	missing_test_tet_file := "missing.tet"
+	bad_test_tet_file := "bad.tet"
+	writeInvalidTetragramFile(t, bad_test_tet_file)
+	defer os.Remove(bad_test_tet_file)
 	scorer := &Tetragraph_Scorer{}
+	scorer.Set_file(missing_test_tet_file)
+	scorer.Set_file(bad_test_tet_file)
 	scorer.Set_file(test_tet_file)
 	if scorer.tetragram_filename_ != test_tet_file {
 		t.Errorf("scorer.tetragram_filename_ should be %s, but actually is %s\n", test_tet_file, scorer.tetragram_filename_)
@@ -152,6 +197,16 @@ func TestTetragraph_Scorer(t *testing.T) {
 	if scorer.Get_scored_count() != 1 {
 		t.Errorf("scorer.Get_scored_count() should be 1, but actually is %d\n", scorer.Get_scored_count())
 	}
+	scorer.Set_file(test_tet_spaces_file)
+	if scorer.tetragram_filename_ != test_tet_spaces_file {
+		t.Errorf("scorer.tetragram_filename_ should be %s, but actually is %s\n", test_tet_spaces_file, scorer.tetragram_filename_)
+	}
+	if !scorer.Spaces_scored() {
+		t.Error("scorer.Spaces_scored() should return true")
+	}
+	if scorer.Get_scored_count() != 0 {
+		t.Errorf("scorer.Get_scored_count() should be 0, but actually is %d\n", scorer.Get_scored_count())
+	}
 }
 
 func writeNgramFile(t *testing.T, filename string) {
@@ -161,6 +216,19 @@ func writeNgramFile(t *testing.T, filename string) {
 		t.Fatal("Failed to create test ngram file")
 	}
 	fmt.Fprintln(f, "THAT : 5307 8.92778")
+	fmt.Fprintln(f, "THER : 5075 8.88308")
+	fmt.Fprintln(f, "WITH : 4325 8.72317")
+	fmt.Fprintln(f, "NTHE : 3957 8.63424")
+	fmt.Fprintln(f, "DTHE : 3369 8.47337")
+}
+
+func writeInvalidNgramFile(t *testing.T, filename string) {
+	f, err := os.OpenFile(filename, os.O_WRONLY|os.O_CREATE, 0666)
+	defer f.Close()
+	if err != nil {
+		t.Fatal("Failed to create test ngram file")
+	}
+	fmt.Fprintln(f, "THAT : 5307 a.bcdef")
 	fmt.Fprintln(f, "THER : 5075 8.88308")
 	fmt.Fprintln(f, "WITH : 4325 8.72317")
 	fmt.Fprintln(f, "NTHE : 3957 8.63424")
@@ -187,7 +255,13 @@ func TestNgraph_Scorer(t *testing.T) {
 	test_ng_spaces_file := "test.ng.spaces"
 	writeNgramFileWithSpaces(t, test_ng_spaces_file)
 	defer os.Remove(test_ng_spaces_file)
+	missing_test_ng_file := "missing.ng"
+	bad_test_ng_file := "bad.ng"
+	writeInvalidNgramFile(t, bad_test_ng_file)
+	defer os.Remove(bad_test_ng_file)
 	scorer := &Ngraph_Scorer{}
+	scorer.Set_file(missing_test_ng_file)
+	scorer.Set_file(bad_test_ng_file)
 	scorer.Set_file(test_ng_file)
 	if scorer.ngraph_filename_ != test_ng_file {
 		t.Errorf("scorer.ngraph_filename_ should be %s, but actually is %s\n", test_ng_file, scorer.ngraph_filename_)
@@ -227,5 +301,15 @@ func TestNgraph_Scorer(t *testing.T) {
 	}
 	if scorer.Get_scored_count() != 1 {
 		t.Errorf("scorer.Get_scored_count() should be 1, but actually is %d\n", scorer.Get_scored_count())
+	}
+	scorer.Set_file(test_ng_spaces_file)
+	if scorer.ngraph_filename_ != test_ng_spaces_file {
+		t.Errorf("scorer.ngraph_filename_ should be %s, but actually is %s\n", test_ng_spaces_file, scorer.ngraph_filename_)
+	}
+	if !scorer.Spaces_scored() {
+		t.Error("scorer.Spaces_scored() should return true")
+	}
+	if scorer.Get_scored_count() != 0 {
+		t.Errorf("scorer.Get_scored_count() should be 0, but actually is %d\n", scorer.Get_scored_count())
 	}
 }
